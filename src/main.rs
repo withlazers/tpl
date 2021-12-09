@@ -34,6 +34,11 @@ impl TemplateObject {
                 format!("Error parsing set option {}={}", key, value)
             })?;
         for seg in key.rsplit(".").map(str::trim) {
+            let mut seg = seg.to_string();
+            while seg.ends_with("[]") {
+                seg = seg.chars().take(seg.len() - 2).collect();
+                stage = vec![stage].into();
+            }
             let mut map = HashMap::new();
             map.insert(seg.to_string(), stage);
             stage = map.into();
@@ -72,12 +77,19 @@ impl Merge for HashMap<String, Value> {
     }
 }
 
+impl Merge for Vec<Value> {
+    fn merge(&mut self, other: Self) {
+        self.extend(other)
+    }
+}
+
 impl Merge for Value {
     fn merge(&mut self, other: Self) {
         use Value::*;
         match (self, other) {
             (Object(a), Object(b)) => a.merge(b),
             (Map(a), Map(b)) => a.merge(b),
+            (Array(a), Array(b)) => a.merge(b),
             (_, Nil) => (),
             (a, b) => *a = b,
         }
