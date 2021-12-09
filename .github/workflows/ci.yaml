@@ -1,0 +1,33 @@
+name: CI
+on:
+  - push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install latest stable
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+    - name: Build
+      uses: actions-rs/cargo@v1
+      with:
+        command: build
+        args: >
+          --verbose
+          --release
+    - name: Run tests
+      uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: >
+          --verbose
+          --release
+    - name: release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/v') && success()
+      with:
+        files: |
+          target/release/tpl
