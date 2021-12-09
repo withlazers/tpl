@@ -147,6 +147,7 @@ dependencies = [
 [[package]]
 name = "gtmpl_value"
 version = "0.5.1"
+source = "git+https://github.com/Gottox/gtmpl_value.git?branch=feature/add-serde#f032fb2aad8a6e4801059db595947f9cd4d6c5f9"
 dependencies = [
  "anyhow",
  "serde",

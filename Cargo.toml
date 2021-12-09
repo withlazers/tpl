@@ -12,4 +12,4 @@ serde_any = { version = "0.5.0", default-features = false, features = ["yaml", "
 gtmpl_value = { version = "0.5.1", features = ["serde"] }
 
 [patch.crates-io]
-gtmpl_value = { path = "../gtmpl_value" }
+gtmpl_value = { git = "https://github.com/Gottox/gtmpl_value.git", branch = "feature/add-serde" }
