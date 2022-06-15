@@ -47,7 +47,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          return context.payload.ref.replace(/\/refs\/tags\//, '');
+          return context.payload.ref.replace(/refs\/tags\/v/, '');
     - name: Build and push
       if: startsWith(github.ref, 'refs/tags/v') && success()
       uses: docker/build-push-action@v3
